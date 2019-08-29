@@ -5,7 +5,12 @@ TERMUX_PKG_VERSION=1.9.0
 TERMUX_PKG_REVISION=3
 TERMUX_PKG_SRCURL=https://github.com/ninja-build/ninja/archive/v${TERMUX_PKG_VERSION}.tar.gz
 TERMUX_PKG_SHA256=5d7ec75828f8d3fd1a0c2f31b5b0cea780cdfe1031359228c428c1a48bfcd5b9
-TERMUX_PKG_DEPENDS="libc++"
+TERMUX_PKG_DEPENDS="libc++, libandroid-spawn"
+
+termux_step_pre_configure() {
+	CXXFLAGS+=" $CPPFLAGS"
+	LDFLAGS+=" -landroid-spawn"
+}
 
 termux_step_configure() {
 	$TERMUX_PKG_SRCDIR/configure.py
