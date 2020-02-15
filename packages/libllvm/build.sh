@@ -56,20 +56,13 @@ TERMUX_PKG_HAS_DEBUG=false
 # cp: cannot stat '../src/projects/openmp/runtime/exports/common.min.50.ompt.optional/include/omp.h': No such file or directory
 # common.min.50.ompt.optional should be common.deb.50.ompt.optional when doing debug build
 
-<<<<<<< HEAD
 termux_step_post_get_source() {
 	if [ "$TERMUX_PKG_QUICK_REBUILD" = "false" ]; then
 		mv clang-${TERMUX_PKG_VERSION}.src tools/clang
-		mv clang-tools-extra-${TERMUX_PKG_VERSION}.src tools/clang/tools/extra
+		#mv clang-tools-extra-${TERMUX_PKG_VERSION}.src tools/clang/tools/extra
 		mv lld-${TERMUX_PKG_VERSION}.src tools/lld
 		mv openmp-${TERMUX_PKG_VERSION}.src projects/openmp
 	fi
-=======
-termux_step_post_extract_package() {
-	mv clang-${TERMUX_PKG_VERSION}.src tools/clang
-	mv lld-${TERMUX_PKG_VERSION}.src tools/lld
-	mv openmp-${TERMUX_PKG_VERSION}.src projects/openmp
->>>>>>> 0379a2e8f... llvm-9.0.1
 }
 
 termux_step_host_build() {
@@ -81,9 +74,11 @@ termux_step_host_build() {
 }
 
 termux_step_pre_configure() {
-	mkdir projects/openmp/runtime/src/android
-	cp $TERMUX_PKG_BUILDER_DIR/nl_types.h projects/openmp/runtime/src/android
-	cp $TERMUX_PKG_BUILDER_DIR/nltypes_stubs.cpp projects/openmp/runtime/src/android
+	if [ "$TERMUX_PKG_QUICK_REBUILD" != "true" ]; then
+		mkdir projects/openmp/runtime/src/android
+		cp $TERMUX_PKG_BUILDER_DIR/nl_types.h projects/openmp/runtime/src/android
+		cp $TERMUX_PKG_BUILDER_DIR/nltypes_stubs.cpp projects/openmp/runtime/src/android
+	fi
 
 	cd $TERMUX_PKG_BUILDDIR
 	export LLVM_DEFAULT_TARGET_TRIPLE=$TERMUX_HOST_PLATFORM
