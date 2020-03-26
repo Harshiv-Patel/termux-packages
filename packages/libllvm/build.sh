@@ -2,6 +2,7 @@ TERMUX_PKG_HOMEPAGE=https://clang.llvm.org/
 TERMUX_PKG_DESCRIPTION="Modular compiler and toolchain technologies library"
 TERMUX_PKG_LICENSE="NCSA"
 TERMUX_PKG_VERSION=9.0.1
+TERMUX_PKG_REVISION=3
 TERMUX_PKG_SHA256=(00a1ee1f389f81e9979f3a640a01c431b3021de0d42278f6508391a2f0b81c9a
 		   5778512b2e065c204010f88777d44b95250671103e434f9dc7363ab2e3804253		   
 		   86262bad3e2fd784ba8c5e2158d7aa36f12b85f2515e95bc81d65d75bb9b0c82
@@ -74,7 +75,7 @@ termux_step_host_build() {
 }
 
 termux_step_pre_configure() {
-	if [ "$TERMUX_PKG_QUICK_REBUILD" != "true" ]; then
+	if [ "$TERMUX_PKG_QUICK_REBUILD" = "false" ]; then
 		mkdir projects/openmp/runtime/src/android
 		cp $TERMUX_PKG_BUILDER_DIR/nl_types.h projects/openmp/runtime/src/android
 		cp $TERMUX_PKG_BUILDER_DIR/nltypes_stubs.cpp projects/openmp/runtime/src/android
