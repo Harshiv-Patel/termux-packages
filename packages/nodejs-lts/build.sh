@@ -16,7 +16,7 @@ TERMUX_PKG_BREAKS="nodejs-dev"
 TERMUX_PKG_REPLACES="nodejs-current, nodejs-dev"
 TERMUX_PKG_HOSTBUILD=true
 
-termux_step_post_extract_package() {
+termux_step_post_get_source() {
 	# Prevent caching of host build:
 	rm -Rf $TERMUX_PKG_HOSTBUILD_DIR
 }
