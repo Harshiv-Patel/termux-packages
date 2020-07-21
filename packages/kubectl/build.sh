@@ -7,7 +7,7 @@ TERMUX_PKG_REVISION=2
 TERMUX_PKG_SRCURL=https://dl.k8s.io/v$TERMUX_PKG_VERSION/kubernetes-src.tar.gz
 TERMUX_PKG_SHA256=21d884b67abd1182958313474a40678ba8f3713e6b6f520401e42c02ba6ea302
 
-termux_step_extract_package() {
+termux_step_get_source() {
 	mkdir -p "$TERMUX_PKG_CACHEDIR"
 	mkdir -p "$TERMUX_PKG_SRCDIR"
 
