@@ -21,19 +21,19 @@ TERMUX_PKG_EXTRA_CONFIGURE_ARGS="
 -DLLVM_NATIVE_BUILD=$TERMUX_PREFIX/bin
 "
 termux_step_pre_configure() {
-	cd $TERMUX_PKG_TMPDIR
-	termux_download https://its-pointless.github.io/tblgen-llvm-lldb-9.0.1.tar.xz tblgen-llvm-lldb-9.0.1.tar.xz \
-		9cfd0aa3d9988e66838d4390ea9b2f701d1d8c87c44e226e10b8afd42c004622
-	tar xvf tblgen-llvm-lldb-9.0.1.tar.xz
-	mv llvm-tblgen $TERMUX_PREFIX/bin
-	PATH=$PATH:$TERMUX_PKG_TMPDIR
-	if [ $TERMUX_ARCH = "x86_64" ]; then
-		export LD_LIBRARY_PATH=/lib/x86_64-linux-gnu/
+	# This will be there if libllvm was built from scratch, but not if the pre-built
+	# package was extracted. Not really needed but the stupid clang CMake config makes
+	# sure it's there.
+	if [ ! -f "$TERMUX_PREFIX/bin/clang-offload-wrapper" ]; then
+		touch $TERMUX_PREFIX/bin/clang-offload-wrapper
+		touch $TERMUX_PKG_BUILDDIR/rm-fake-ci-test
 	fi
 	touch $TERMUX_PREFIX/bin/clang-import-test
 }
 
 termux_step_post_make_install() {
-	cp $TERMUX_PKG_SRCDIR/docs/lldb.1 $TERMUX_PREFIX/share/man/man1
-	rm -f  $TERMUX_PREFIX/bin/llvm-tblgen $TERMUX_PREFIX/bin/clang-import-test
+	cp $TERMUX_PKG_BUILDDIR/docs/man/lldb.1 $TERMUX_PREFIX/share/man/man1
+	if [ -f "$TERMUX_PKG_BUILDDIR/rm-fake-ci-test" ]; then
+		rm $TERMUX_PREFIX/bin/clang-offload-wrapper
+	fi
 }
