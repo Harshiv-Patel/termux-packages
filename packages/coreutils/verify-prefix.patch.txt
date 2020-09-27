@@ -13,7 +13,11 @@ diff -uNr coreutils-8.32/src/coreutils.c coreutils-8.32.mod/src/coreutils.c
  #include "system.h"
  #include "die.h"
  #include "error.h"
+<<<<<<< HEAD
 @@ -133,6 +135,25 @@
+=======
+@@ -133,6 +135,26 @@
+>>>>>>> 7e89e130c... apply prefix verification patches again - now shouldn't cause crash
    char *prog_name = last_component (argv[0]);
    int optc;
  
@@ -21,10 +25,18 @@ diff -uNr coreutils-8.32/src/coreutils.c coreutils-8.32.mod/src/coreutils.c
 +  // by using equal-size prefixes.
 +  const char termux_prefix_obfs[] = "rsu/selif/xumret.moc/atad/atad/";
 +  char termux_prefix[sizeof(termux_prefix_obfs)/sizeof(char)] = {0};
+<<<<<<< HEAD
 +
 +  // Decode.
 +  for (int i=0; i<(sizeof(termux_prefix_obfs)/sizeof(char)); i++) {
 +    termux_prefix[sizeof(termux_prefix_obfs)/sizeof(char) - 2 - i] = termux_prefix_obfs[i];
+=======
++  int termux_prefix_len = sizeof(termux_prefix_obfs)/sizeof(char) - 1;
++
++  // Decode.
++  for (int i=0; i<termux_prefix_len; i++) {
++    termux_prefix[termux_prefix_len - 1 - i] = termux_prefix_obfs[i];
+>>>>>>> 7e89e130c... apply prefix verification patches again - now shouldn't cause crash
 +  }
 +
 +  // Stub to verify that we can access @TERMUX_PREFIX@ and it is a directory.
