@@ -1,8 +1,8 @@
 TERMUX_PKG_HOMEPAGE=https://packages.debian.org/dpkg
 TERMUX_PKG_DESCRIPTION="Debian package management system"
 TERMUX_PKG_LICENSE="GPL-2.0"
-TERMUX_PKG_VERSION=1.19.7
-TERMUX_PKG_REVISION=5
+TERMUX_PKG_VERSION=1.20.5
+TERMUX_PKG_REVISION=1
 TERMUX_PKG_SRCURL=https://mirrors.kernel.org/debian/pool/main/d/dpkg/dpkg_${TERMUX_PKG_VERSION}.tar.xz
 TERMUX_PKG_SHA256=4c27fededf620c0aa522fff1a48577ba08144445341257502e7730f2b1a296e8
 # with the extract.c.patch we remove the -p and --warning=no-timestamp tar options so we can use busybox tar
@@ -74,6 +74,12 @@ share/polkit-1
 termux_step_pre_configure() {
 	export TAR=tar # To make sure dpkg tries to use "tar" instead of e.g. "gnutar" (which happens when building on OS X)
 	perl -p -i -e "s/TERMUX_ARCH/$TERMUX_ARCH/" $TERMUX_PKG_SRCDIR/configure
+
+	# Prefix verification patch should be applied only for the
+	# builds with original prefix.
+	if [ "$TERMUX_PREFIX" = "/data/data/com.termux/files/usr" ]; then
+		patch -p1 -i $TERMUX_PKG_BUILDER_DIR/verify-prefix.patch.txt
+	fi
 }
 
 termux_step_post_massage() {

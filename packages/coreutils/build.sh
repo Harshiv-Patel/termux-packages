@@ -1,8 +1,8 @@
 TERMUX_PKG_HOMEPAGE=https://www.gnu.org/software/coreutils/
 TERMUX_PKG_DESCRIPTION="Basic file, shell and text manipulation utilities from the GNU project"
 TERMUX_PKG_LICENSE="GPL-3.0"
-TERMUX_PKG_VERSION=8.31
-TERMUX_PKG_REVISION=5
+TERMUX_PKG_VERSION=8.32
+TERMUX_PKG_REVISION=3
 TERMUX_PKG_SRCURL=https://mirrors.kernel.org/gnu/coreutils/coreutils-${TERMUX_PKG_VERSION}.tar.xz
 TERMUX_PKG_SHA256=ff7a9c918edce6b4f4b2725e3f9b37b0c4d193531cac49a48b56c4d0d3a9e9fd
 TERMUX_PKG_DEPENDS="libandroid-support, libiconv"
@@ -33,5 +33,11 @@ termux_step_pre_configure() {
 	# something else) in the installation process.
 	if $TERMUX_ON_DEVICE_BUILD; then
 		termux_error_exit "Package '$TERMUX_PKG_NAME' is not safe for on-device builds."
+	fi
+
+	# Prefix verification patch should be applied only for the
+	# builds with original prefix.
+	if [ "$TERMUX_PREFIX" = "/data/data/com.termux/files/usr" ]; then
+		patch -p1 -i $TERMUX_PKG_BUILDER_DIR/verify-prefix.patch.txt
 	fi
 }

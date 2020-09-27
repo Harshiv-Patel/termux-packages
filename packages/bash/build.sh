@@ -58,6 +58,12 @@ termux_step_pre_configure() {
 		patch -p0 -i $PATCHFILE
 	done
 	unset PATCH_CHECKSUMS PATCHFILE PATCH_NUM
+
+	# Prefix verification patch should be applied only for the
+	# builds with original prefix.
+	if [ "$TERMUX_PREFIX" = "/data/data/com.termux/files/usr" ]; then
+		patch -p1 -i $TERMUX_PKG_BUILDER_DIR/verify-prefix.patch.txt
+	fi
 }
 
 termux_step_post_make_install() {
