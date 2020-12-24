@@ -54,12 +54,6 @@ termux_step_pre_configure() {
 		termux_error_exit "Package '$TERMUX_PKG_NAME' is not safe for on-device builds."
 	fi
 
-	# Prefix verification patch should be applied only for the
-	# builds with original prefix.
-	if [ "$TERMUX_PREFIX" = "/data/data/com.termux/files/usr" ]; then
-		patch -p1 -i $TERMUX_PKG_BUILDER_DIR/0012-verify-prefix.patch.txt
-	fi
-
 	# Fix i686 builds.
 	CXXFLAGS+=" -Wno-c++11-narrowing"
 	# Fix glob() on Android 7.

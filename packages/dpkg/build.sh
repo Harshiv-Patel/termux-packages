@@ -73,12 +73,6 @@ share/polkit-1
 termux_step_pre_configure() {
 	export TAR=tar # To make sure dpkg tries to use "tar" instead of e.g. "gnutar" (which happens when building on OS X)
 	perl -p -i -e "s/TERMUX_ARCH/$TERMUX_ARCH/" $TERMUX_PKG_SRCDIR/configure
-
-	# Prefix verification patch should be applied only for the
-	# builds with original prefix.
-	if [ "$TERMUX_PREFIX" = "/data/data/com.termux/files/usr" ]; then
-		patch -p1 -i $TERMUX_PKG_BUILDER_DIR/verify-prefix.patch.txt
-	fi
 }
 
 termux_step_post_massage() {
