@@ -1,0 +1,12 @@
+diff -uNr ../procps-3.3.17/skill.c ./skill.c > ../skill.c.patch
+--- ../procps-3.3.17/skill.c	2021-02-09 15:41:25.000000000 +0530
++++ ./skill.c	2021-04-21 15:31:45.641923998 +0530
+@@ -526,7 +526,7 @@
+ 	for (i = 0; i < argc; i++) {
+ 		pid = strtol_or_err(argv[i], _("failed to parse argument"));
+ 		if (use_sigqueue) {
+-		    if (!sigqueue((pid_t) pid, signo, sigval))
++		   // if (!sigqueue((pid_t) pid, signo, sigval))
+ 			continue;
+ 		}
+ 		else if (!kill((pid_t) pid, signo))

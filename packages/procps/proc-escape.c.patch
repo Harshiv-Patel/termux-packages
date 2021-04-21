@@ -1,0 +1,33 @@
+diff -uNr ../procps-3.3.17/proc/escape.c ./proc/escape.c > ../proc-escape.c.patch
+--- ../procps-3.3.17/proc/escape.c	2021-02-09 15:41:25.000000000 +0530
++++ ./proc/escape.c	2021-04-21 15:05:26.139814294 +0530
+@@ -131,9 +131,13 @@
+   static int utf_init=0;
+ 
+   if(utf_init==0){
++#ifdef __ANDROID__
++      utf_init = 1;
++#else
+      /* first call -- check if UTF stuff is usable */
+      char *enc = nl_langinfo(CODESET);
+      utf_init = enc && strcasecmp(enc, "UTF-8")==0 ? 1 : -1;
++#endif
+   }
+   if (utf_init==1 && MB_CUR_MAX>1) {
+      /* UTF8 locales */
+@@ -232,11 +236,14 @@
+   static int utf_sw = 0;
+   int i, n;
+   char c;
+-
++#ifdef __ANDROID__
++      utf_sw = 1;
++#else
+   if(utf_sw == 0){
+      char *enc = nl_langinfo(CODESET);
+      utf_sw = enc && strcasecmp(enc, "UTF-8")==0 ? 1 : -1;
+   }
++#endif
+   SECURE_ESCAPE_ARGS(dst, bufsize, *maxroom);
+   if (bufsize > *maxroom+1) bufsize = *maxroom+1;
+ 

@@ -9,3 +9,5 @@ Session.vim
 ### Vagrant ###
 scripts/*.log
 scripts/.vagrant/
+# kubuntu meta-data dir
+.directory
