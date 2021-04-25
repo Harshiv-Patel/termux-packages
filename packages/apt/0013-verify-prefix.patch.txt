@@ -2,15 +2,9 @@ Patch to encourage third-parties to compile own packages instead
 of using hosted by Termux.
 
 diff -uNr apt-1.4.10/cmdline/apt.cc apt-1.4.10.mod/cmdline/apt.cc
-<<<<<<< HEAD
---- apt-1.4.10/cmdline/apt.cc	2020-09-27 22:16:27.657180388 +0300
-+++ apt-1.4.10.mod/cmdline/apt.cc	2020-09-27 23:34:20.315472238 +0300
-@@ -103,6 +103,25 @@
-=======
 --- apt-1.4.10/cmdline/apt.cc	2020-09-28 02:39:43.263956603 +0300
 +++ apt-1.4.10.mod/cmdline/apt.cc	2020-09-28 02:40:31.852376007 +0300
 @@ -103,6 +103,26 @@
->>>>>>> 7e89e130c... apply prefix verification patches again - now shouldn't cause crash
        return 1;
     }
  
@@ -18,18 +12,11 @@ diff -uNr apt-1.4.10/cmdline/apt.cc apt-1.4.10.mod/cmdline/apt.cc
 +   // by using equal-size prefixes.
 +   const char termux_prefix_obfs[] = "rsu/selif/xumret.moc/atad/atad/";
 +   char termux_prefix[sizeof(termux_prefix_obfs)/sizeof(char)] = {0};
-<<<<<<< HEAD
-+
-+   // Decode.
-+   for (int i=0; i<(sizeof(termux_prefix_obfs)/sizeof(char)); i++) {
-+     termux_prefix[sizeof(termux_prefix_obfs)/sizeof(char) - 2 - i] = termux_prefix_obfs[i];
-=======
 +   int termux_prefix_len = sizeof(termux_prefix_obfs)/sizeof(char) - 1;
 +
 +   // Decode.
 +   for (int i=0; i<termux_prefix_len; i++) {
 +     termux_prefix[termux_prefix_len - 1 - i] = termux_prefix_obfs[i];
->>>>>>> 7e89e130c... apply prefix verification patches again - now shouldn't cause crash
 +   }
 +
 +   // Stub to verify that we can access @TERMUX_PREFIX@ and it is a directory.
