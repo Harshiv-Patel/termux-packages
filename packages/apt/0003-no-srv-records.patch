@@ -59,30 +59,32 @@ diff -uNr apt-2.1.11/cmdline/apt-helper.cc apt-2.1.11.mod/cmdline/apt-helper.cc
         {"cat-file", &DoCatFile, _("concatenate files, with automatic decompression")},
         {"auto-detect-proxy", &DoAutoDetectProxy, _("detect proxy using apt.conf")},
         {"wait-online", &DoWaitOnline, _("wait for system to be online")},
-diff -uNr apt-2.1.11/methods/connect.cc apt-2.1.11.mod/methods/connect.cc
---- apt-2.1.11/methods/connect.cc	2020-10-21 12:53:18.000000000 +0300
-+++ apt-2.1.11.mod/methods/connect.cc	2020-11-05 16:42:47.459060807 +0200
-@@ -49,7 +49,9 @@
+diff -uNr ../apt-2.2.2/methods/connect.cc ./methods/connect.cc
+--- ../apt-2.2.2/methods/connect.cc     2021-03-12 13:45:59.000000000 +0530
++++ ./methods/connect.cc        2021-04-25 16:37:07.759087911 +0530
+@@ -49,8 +49,9 @@
  static struct addrinfo *LastHostAddr = 0;
  static struct addrinfo *LastUsed = 0;
  
 +#ifndef __ANDROID__
  static std::vector<SrvRec> SrvRecords;
+-
 +#endif
- 
  // Set of IP/hostnames that we timed out before or couldn't resolve
  static std::set<std::string> bad_addr;
-@@ -486,6 +488,9 @@
-    if (ConnectionAllowed(Service, Host) == false)
-       return ResultState::FATAL_ERROR;
  
-+size_t stackSize = 0;
-+
+@@ -485,7 +486,9 @@
+ 
+    // Used by getaddrinfo(); prefer port if given, else fallback to service
+    std::string ServiceNameOrPort = Port != 0 ? std::to_string(Port) : Service;
+-
++   size_t stackSize = 0;
++   
 +#ifndef __ANDROID__
-    if(LastHost != Host || LastPort != Port)
+    if(LastHost != Host || LastService != ServiceNameOrPort)
     {
        SrvRecords.clear();
-@@ -503,7 +508,6 @@
+@@ -503,7 +506,6 @@
        }
     }
  
@@ -90,11 +92,13 @@ diff -uNr apt-2.1.11/methods/connect.cc apt-2.1.11.mod/methods/connect.cc
     // try to connect in the priority order of the srv records
     std::string initialHost{std::move(Host)};
     auto const initialPort = Port;
-@@ -525,6 +529,7 @@
+@@ -525,7 +527,7 @@
     }
     Host = std::move(initialHost);
     Port = initialPort;
+-
 +#endif
- 
     // we have no (good) SrvRecords for this host, connect right away
     _error->PushToStack();
+    ++stackSize;
+
