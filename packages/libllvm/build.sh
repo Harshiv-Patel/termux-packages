@@ -54,6 +54,7 @@ TERMUX_PKG_HAS_DEBUG=false
 # cp: cannot stat '../src/projects/openmp/runtime/exports/common.min.50.ompt.optional/include/omp.h': No such file or directory
 # common.min.50.ompt.optional should be common.deb.50.ompt.optional when doing debug build
 
+TERMUX_PKG_QUICK_REBUILD=""
 termux_step_post_get_source() {
 	if [ "$TERMUX_PKG_QUICK_REBUILD" = "false" ]; then
 		mv clang-${TERMUX_PKG_VERSION}.src tools/clang
@@ -98,7 +99,7 @@ termux_step_pre_configure() {
 
 termux_step_post_make_install() {
 	if [ $TERMUX_ARCH = "arm" ]; then
-		cp $TERMUX_PKG_SRCDIR/projects/openmp/runtime/exports/common/include/omp.h $TERMUX_PREFIX/include
+		cp $TERMUX_PKG_SRCDIR/projects/openmp/runtime/exports/common.min/include/omp.h $TERMUX_PREFIX/include
 	else
 		cp $TERMUX_PKG_SRCDIR/projects/openmp/runtime/exports/common.ompt.optional/include/omp.h $TERMUX_PREFIX/include
 	fi
