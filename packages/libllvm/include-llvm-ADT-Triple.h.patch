@@ -1,12 +1,11 @@
-diff --git a/include/llvm/ADT/Triple.h b/include/llvm/ADT/Triple.h
-index 926039ca5982..0e4b55733f5e 100644
---- a/include/llvm/ADT/Triple.h
-+++ b/include/llvm/ADT/Triple.h
-@@ -666,6 +666,10 @@ public:
+diff -uNr ./include/llvm/ADT/Triple.h ./mod_include/llvm/ADT/Triple.h > include-llvm-ADT-Triple.h.patch
+--- ./include/llvm/ADT/Triple.h	2020-07-07 21:51:37.000000000 +0530
++++ ./mod_include/llvm/ADT/Triple.h	2021-05-03 22:20:00.354303127 +0530
+@@ -667,6 +667,10 @@
      unsigned Env[3];
      getEnvironmentVersion(Env[0], Env[1], Env[2]);
  
-+    // If not specified, set a default Android API.
++	// If not specified, set a default Android API.
 +    if (Env[0] == 0)
 +      Env[0] = __ANDROID_API__;
 +

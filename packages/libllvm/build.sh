@@ -17,7 +17,7 @@ TERMUX_PKG_SRCURL=(https://github.com/llvm/llvm-project/releases/download/llvmor
                    https://github.com/llvm/llvm-project/releases/download/llvmorg-$TERMUX_PKG_VERSION/clang-tools-extra-$TERMUX_PKG_VERSION.src.tar.xz
                    https://github.com/llvm/llvm-project/releases/download/llvmorg-$TERMUX_PKG_VERSION/compiler-rt-$TERMUX_PKG_VERSION.src.tar.xz
                    https://github.com/llvm/llvm-project/releases/download/llvmorg-$TERMUX_PKG_VERSION/polly-$TERMUX_PKG_VERSION.src.tar.xz)
-TERMUX_PKG_HOSTBUILD=true
+TERMUX_PKG_HOSTBUILD="true"
 TERMUX_PKG_RM_AFTER_INSTALL="
 lib/libgomp.a
 lib/libiomp5.a
@@ -64,9 +64,9 @@ TERMUX_PKG_HAS_DEBUG=false
 # cp: cannot stat '../src/projects/openmp/runtime/exports/common.min.50.ompt.optional/include/omp.h': No such file or directory
 # common.min.50.ompt.optional should be common.deb.50.ompt.optional when doing debug build
 
-TERMUX_PKG_QUICK_REBUILD=""
+TERMUX_PKG_QUICK_REBUILD="false"
 termux_step_post_get_source() {
-	if [ "$TERMUX_PKG_QUICK_REBUILD" = "false" ]; then
+	if [ "$TERMUX_PKG_QUICK_REBUILD" != "true" ]; then
 		mv clang-${TERMUX_PKG_VERSION}.src tools/clang
 		mv clang-tools-extra-${TERMUX_PKG_VERSION}.src tools/clang/tools/extra
 		mv lld-${TERMUX_PKG_VERSION}.src tools/lld
@@ -82,10 +82,11 @@ termux_step_host_build() {
 
 	cmake -G Ninja $TERMUX_PKG_SRCDIR
 	ninja -j $TERMUX_MAKE_PROCESSES clang-tblgen llvm-tblgen
+
 }
 
 termux_step_pre_configure() {
-	if [ "$TERMUX_PKG_QUICK_REBUILD" = "false" ]; then
+	if [ "$TERMUX_PKG_QUICK_REBUILD" != "true" ]; then
 		mkdir projects/openmp/runtime/src/android
 		cp $TERMUX_PKG_BUILDER_DIR/nl_types.h projects/openmp/runtime/src/android
 		cp $TERMUX_PKG_BUILDER_DIR/nltypes_stubs.cpp projects/openmp/runtime/src/android
@@ -111,7 +112,7 @@ termux_step_pre_configure() {
 
 termux_step_post_make_install() {
 	if [ $TERMUX_ARCH = "arm" ]; then
-		cp $TERMUX_PKG_SRCDIR/projects/openmp/runtime/exports/common.min/include/omp.h $TERMUX_PREFIX/include
+        cp $TERMUX_PKG_SRCDIR/projects/openmp/runtime/exports/common.min/include/omp.h $TERMUX_PREFIX/include
 	else
 		cp $TERMUX_PKG_SRCDIR/projects/openmp/runtime/exports/common.ompt.optional/include/omp.h $TERMUX_PREFIX/include
 	fi
