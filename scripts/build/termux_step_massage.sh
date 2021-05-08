@@ -10,7 +10,7 @@ termux_step_massage() {
 	rm -Rf share/locale
 
 	# Remove old kept libraries (readline):
-	find . -name '*.old' -print0 | xargs -0 -r rm -f
+	find . -name '*.old' -print0 | xargs -0 -r rm -rf
 
 	# Move over sbin to bin:
 	for file in sbin/*; do if test -f "$file"; then mv "$file" bin/; fi; done

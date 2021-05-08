@@ -23,7 +23,7 @@ termux_create_subpackages() {
 		local TERMUX_SUBPKG_REPLACES=""
 		local TERMUX_SUBPKG_CONFFILES=""
 		local TERMUX_SUBPKG_DEPEND_ON_PARENT=""
-		local SUB_PKG_MASSAGE_DIR=$SUB_PKG_DIR/massage/$TERMUX_PREFIX
+		local SUB_PKG_MASSAGE_DIR=$SUB_PKG_DIR/massage$TERMUX_PREFIX
 		local SUB_PKG_PACKAGE_DIR=$SUB_PKG_DIR/package
 		mkdir -p "$SUB_PKG_MASSAGE_DIR" "$SUB_PKG_PACKAGE_DIR"
 
@@ -34,11 +34,14 @@ termux_create_subpackages() {
 		shopt -s globstar
 		for includeset in $TERMUX_SUBPKG_INCLUDE; do
 			local _INCLUDE_DIRSET
-			_INCLUDE_DIRSET=$(dirname "$includeset")
+			echo "$includeset"
+#			_INCLUDE_DIRSET=$(dirname "$includeset")
+            _INCLUDE_DIRSET=${includeset%/*}
 			test "$_INCLUDE_DIRSET" = "." && _INCLUDE_DIRSET=""
 
 			if [ -e "$includeset" ] || [ -L "$includeset" ]; then
 				# Add the -L clause to handle relative symbolic links:
+                echo "${SUB_PKG_MASSAGE_DIR%/*}"
 				mkdir -p "$SUB_PKG_MASSAGE_DIR/$_INCLUDE_DIRSET"
 				mv "$includeset" "$SUB_PKG_MASSAGE_DIR/$_INCLUDE_DIRSET"
 			fi
