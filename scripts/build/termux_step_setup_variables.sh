@@ -133,6 +133,7 @@ termux_step_setup_variables() {
 	TERMUX_PKG_HAS_DEBUG=true # set to false if debug build doesn't exist or doesn't work, for example for python based packages
 	TERMUX_PKG_METAPACKAGE=false
 	TERMUX_PKG_QUICK_REBUILD=false # set this temporarily when iterating on a large package and you don't want the source and build directories wiped every time you make a mistake
+	: "${TERMUX_PATCH_VERBOSE:=false}" # pass -P to enable this in build-package.sh to enable patch-tool verbose output
 
 	unset CFLAGS CPPFLAGS LDFLAGS CXXFLAGS
 }

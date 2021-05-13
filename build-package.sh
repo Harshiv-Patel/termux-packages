@@ -233,13 +233,14 @@ _show_usage() {
     echo "  -f Force build even if package has already been built."
     [ "$TERMUX_ON_DEVICE_BUILD" = "false" ] && echo "  -i Download and extract dependencies instead of building them."
     echo "  -I Download and extract dependencies instead of building them, keep existing /data/data/com.termux files."
+    echo "  -P enable --verbose option for patch tool while applying patches in termux_step_patch_package."
     echo "  -q Quiet build."
     echo "  -s Skip dependency check."
     echo "  -o Specify deb directory. Default: debs/."
     exit 1
 }
 
-while getopts :a:hdDfiIqso: option; do
+while getopts :a:hdDfiIPqso: option; do
 	case "$option" in
 		a)
 			if [ "$TERMUX_ON_DEVICE_BUILD" = "true" ]; then
@@ -260,6 +261,7 @@ while getopts :a:hdDfiIqso: option; do
 			fi
 			;;
 		I) export TERMUX_INSTALL_DEPS=true && export TERMUX_NO_CLEAN=true;;
+		P) TERMUX_PATCH_VERBOSE=true;;
 		q) export TERMUX_QUIET_BUILD=true;;
 		s) export TERMUX_SKIP_DEPCHECK=true;;
 		o) TERMUX_DEBDIR=$(realpath -m "$OPTARG");;
